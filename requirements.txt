@@ -1,0 +1,13 @@
+os
+socket
+flask
+flask_uploads
+flask_wtf
+wtforms 
+keras
+numpy
+imutils
+cv2
+tempfile
+argparse
+
