@@ -1,3 +1,4 @@
-.pyc
-app/static/*.jpg
-app/uploads/*.jpg
+*.pyc
+*.jpg
+*.png
+*.jpeg
