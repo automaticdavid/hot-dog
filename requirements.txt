@@ -9,5 +9,5 @@ numpy
 imutils
 cv2
 tempfile
-argparse
+gunicorn
 
