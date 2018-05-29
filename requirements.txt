@@ -1,0 +1,10 @@
+flask
+flask_uploads
+flask_wtf
+wtforms 
+keras
+tensorflow
+numpy
+imutils
+opencv-python
+gunicorn
