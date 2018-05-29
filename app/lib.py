@@ -18,21 +18,21 @@ class NotSanta:
         orig = image.copy()
 
         # pre-process the image for classification
-        image = cv2.resize(image, (50, 50))
+        image = cv2.resize(image, (100, 100))
         image = image.astype("float") / 255.0
         image = img_to_array(image)
         image = np.expand_dims(image, axis=0)
 
         # classify the input image
-        (unkown, dog, cat) = model.predict(image)[0]
+        (unkown, car, cat) = model.predict(image)[0]
 
         # build the label
 
-        if dog > unkown and dog > cat:
-            label = "Dog"
-            proba =dog 
-        elif cat > unkown and cat > dog:
-            label = "Cat"
+        if car > unkown and car > cat:
+            label = "CAR"
+            proba =car 
+        elif cat > unkown and cat > car:
+            label = "CAT"
             proba = cat
         else: 
             label = "What?"
