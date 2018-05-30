@@ -31,7 +31,7 @@ def upload_file():
     form = UploadForm()
     if form.validate_on_submit():
         filename = photos.save(form.photo.data)
-        result = NotSanta().classify("model/cats_and_cars.model", 'uploads/' + filename)
+        result = NotSanta().classify("model/model.model", 'uploads/' + filename)
         result_name = os.path.basename(result)
     else:
         result_name = None
