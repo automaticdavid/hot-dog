@@ -37,7 +37,6 @@ def upload_file():
         result_name = os.path.basename(result)
     else:
         result_name = None
-    print(">>>", result_name)
 
     return render_template('index.html', form=form, file=result_name, host=curr_host, ip=curr_ip)
 
