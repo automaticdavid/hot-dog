@@ -14,7 +14,7 @@ app.config['SECRET_KEY'] = 'I have a dream'
 app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd() + '/uploads/'
 app.config['RESULTS'] = dir_results
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
-app.config['MODEL'] = "model/santa_not_santa.model"
+app.config['MODEL'] = "model/model.model"
 
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)

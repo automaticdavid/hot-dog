@@ -18,7 +18,7 @@ class NotSanta:
         orig = image.copy()
 
         # pre-process the image for classification
-        image = cv2.resize(image, (28, 28))
+        image = cv2.resize(image, (100, 100))
         image = image.astype("float") / 255.0
         image = img_to_array(image)
         image = np.expand_dims(image, axis=0)
@@ -29,10 +29,10 @@ class NotSanta:
         # build the label
 
         if santa > not_santa:
-            label = "Santa"
+            label = "It's a CAR !"
             proba = santa
         else: 
-            label = "Not Santa"
+            label = "Not a car."
             proba = not_santa
 
         label = "{}: {:.2f}%".format(label, proba * 100)
