@@ -1,4 +1,4 @@
-bind = "127.0.0.1:80"
+bind = "0.0.0.0:80"
 workers = 5
 threads = 5
 preload = True
