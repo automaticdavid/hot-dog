@@ -4,8 +4,8 @@ threads = 5
 max-requests = 5
 preload = true
 daemon = true
-access-logfile = /tmp/gunicorn.access.log
+access-logfile = "/tmp/gunicorn.access.log"
 capture-output = true
-error-logfile = /tmp/gunicorn.error.log
+error-logfile = "/tmp/gunicorn.error.log"
 
 
