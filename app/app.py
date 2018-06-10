@@ -17,7 +17,7 @@ app.config['RESULTS'] = dir_results
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 app.config['MODEL'] = "model/model.model"
 
-S3_BUCKET_NAME = os.getenv("S3_BUCKET_NAME")
+S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME")
 S3_KEY = os.environ.get("S3_KEY")
 S3_SECRET = os.environ.get("S3_SECRET")
 S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET_NAME)
