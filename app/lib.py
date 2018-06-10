@@ -48,9 +48,8 @@ class NotSanta:
 
         del model
         K.clear_session()
-
-        print(f)
-        return(f)
+        
+        return(f.name)
 
 
 

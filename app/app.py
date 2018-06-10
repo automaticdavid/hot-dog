@@ -39,8 +39,7 @@ def upload_file():
     form = UploadForm()
     if form.validate_on_submit():
         filename = photos.save(form.photo.data)
-        result = NotSanta().classify(app.config['MODEL'], 'uploads/' + filename)
-        result_name = os.path.basename(result.name)
+        result_name = NotSanta().classify(app.config['MODEL'], 'uploads/' + filename)
     else:
         result_name = None
         s3_result = None
@@ -53,14 +52,15 @@ def upload_file():
             aws_secret_access_key=S3_SECRET
         )
 
+
+        print(result_name, S3_BUCKET_NAME)
         try:
-            s3.upload_fileobj(
-                result,
+            s3.upload_file(
+                result_name,
                 S3_BUCKET_NAME,
                 result_name,
                 ExtraArgs={
-                   "ACL": "public-read",
-                   # "ContentType": f.content_type
+                   "ACL": "public-read"
                 }
             )
             s3_result = "{}{}".format(S3_LOCATION, result_name)
