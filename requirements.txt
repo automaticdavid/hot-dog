@@ -8,3 +8,4 @@ numpy
 imutils
 opencv-python
 gunicorn
+boto3
