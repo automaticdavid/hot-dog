@@ -67,7 +67,7 @@ def upload_file():
 
         except Exception as e:
             print("S3 ERROR: ", e)
-            raise e
+            raise
 
     return render_template('index.html', form=form, file=s3_result, host=curr_host, ip=curr_ip)
 
