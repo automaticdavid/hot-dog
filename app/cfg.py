@@ -9,17 +9,6 @@ reload = True
 #enable_stdio_inheritance = True
 #loglevel = 'debug'
 
-S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME")
-S3_KEY = os.environ.get("S3_KEY")
-S3_SECRET = os.environ.get("S3_SECRET")
-S3_LOCATION = 'http://{}.s3.amazonoaws.com/'.format(S3_BUCKET_NAME)
-
-
-raw_env =  [ 
-    'S3_BUCKET_NAME =' + S3_BUCKET_NAME, 
-    'S3_KEY = ' + S3_KEY,
-    'S3_SECRET = ' + S3_SECRET,
-    'S3_LOCATION = ' + S3_LOCATION
-    ]
-
+# -- ANSIBLE MANAGED BLOCK -- #
+# -- ANSIBLE MANAGED BLOCK -- #
 
