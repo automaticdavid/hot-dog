@@ -46,9 +46,12 @@ def upload_file():
     if result_filename:
         result = ObjectStore(OBJECT_STORE, result_filename).upload()
 
-    return render_template('index.html', form=form, file=result, host=curr_host, ip=curr_ip)
+    if OBJECT_STORE != 'local':
+    	return render_template('index.html', form=form, file=result, host=curr_host, ip=curr_ip)
+    else: 
+    	return render_template('index.local.html', form=form, file=result, host=curr_host, ip=curr_ip)
 
 
 if __name__ == '__main__':
-     # app.debug = True
+    app.debug = True
     app.run()

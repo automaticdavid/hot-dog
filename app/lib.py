@@ -27,16 +27,16 @@ class NotSanta:
         image = np.expand_dims(image, axis=0)
 
         # classify the input image
-        (not_santa, santa) = model.predict(image)[0]
+        (not_car, car) = model.predict(image)[0]
 
         # build the label
 
-        if santa > not_santa:
-            label = "It's a CAR !"
-            proba = santa
+        if car > not_car:
+            label = "It's a CAR"
+            proba = car
         else: 
             label = "Not a car."
-            proba = not_santa
+            proba = not_car
 
         label = "{}: {:.2f}%".format(label, proba * 100)
 
@@ -71,7 +71,8 @@ class ObjectStore:
         elif store == 'blob':
             result = self.blob_upload(filepath)           
         elif store == 'local':
-            pass
+            filename = os.path.basename(filepath)
+            return(filename)
         else: 
             raise
 
@@ -135,7 +136,4 @@ class ObjectStore:
         
         return(blob_result)
         
-    def local_upload(self, filename):
-        pass
-
 

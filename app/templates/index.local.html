@@ -1,0 +1,18 @@
+<h1> Car or Not Car ?</h1>
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    {{ form.photo }}
+    {% for error in form.photo.errors %}
+        <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+    {{ form.submit }}
+</form>
+
+{% if file %}
+<br>
+ <img src="{{ url_for( 'static', filename=file ) }}" />
+ <P>
+This page served from: <BR>
+ {{host}} <BR>
+ {{ip}}
+{% endif %}
