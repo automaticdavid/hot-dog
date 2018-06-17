@@ -9,3 +9,4 @@ imutils
 opencv-python
 gunicorn
 boto3
+azure-storage

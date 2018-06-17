@@ -5,6 +5,9 @@ import numpy as np
 import imutils
 import cv2
 import tempfile
+import boto3
+import os
+from azure.storage.blob import BlockBlobService, PublicAccess
 
 class NotSanta:
 
@@ -51,5 +54,88 @@ class NotSanta:
         
         return(f.name)
 
+
+class ObjectStore:
+
+    def __init__(self, OBJECT_STORE, filepath):
+        self.store = OBJECT_STORE
+        self.filepath = filepath
+
+    def upload(self): 
+
+        filepath = self.filepath
+        store = self.store
+
+        if store  == 's3':
+            result = self.s3_upload(filepath)
+        elif store == 'blob':
+            result = self.blob_upload(filepath)           
+        elif store == 'local':
+            pass
+        else: 
+            raise
+
+        return(result)
+
+    def s3_upload(self, filepath):
+
+        S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME")
+        S3_KEY = os.environ.get("S3_KEY")
+        S3_SECRET = os.environ.get("S3_SECRET")
+        S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET_NAME)
+
+        s3 = boto3.client(
+            "s3",
+            aws_access_key_id=S3_KEY,
+            aws_secret_access_key=S3_SECRET
+        )
+
+        filename = os.path.basename(filepath)
+
+        try:
+            s3.upload_file(
+                filepath,
+                S3_BUCKET_NAME,
+                filename,
+                ExtraArgs={
+                   "ACL": "public-read"
+                }
+            )
+            s3_result = "{}{}".format(S3_LOCATION, filename)
+            return(s3_result)
+
+        except Exception as e:
+            print("S3 ERROR: ", e)
+            raise
+
+
+    def blob_upload(self, filepath):
+
+        BLOB_CONTAINER = os.environ.get("BLOB_CONTAINER")
+        BLOB_KEY = os.environ.get("BLOB_KEY")
+        BLOB_ACCOUNT = os.environ.get("BLOB_ACCOUNT")
+
+        filename = os.path.basename(filepath)
+
+        try:
+
+            block_blob_service = BlockBlobService(
+                        account_name=BLOB_ACCOUNT, 
+                        account_key=BLOB_KEY)
+
+            block_blob_service.create_blob_from_path(
+                BLOB_CONTAINER,
+                filename,
+                filepath)
+
+            blob_result = "https://{}.blob.core.windows.net/results/{}".format(BLOB_ACCOUNT, filename)
+
+        except Exception as e:
+            print("BLOB ERROR: ", e)
+        
+        return(blob_result)
+        
+    def local_upload(self, filename):
+        pass
 
 

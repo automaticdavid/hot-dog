@@ -1,12 +1,12 @@
 import os
 import socket
-import boto3
 from flask import Flask, render_template, url_for
 from flask_uploads import UploadSet, configure_uploads, IMAGES, patch_request_class
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
 from lib import NotSanta
+from lib import ObjectStore
 
 dir_results = os.getcwd() + '/static/'
 
@@ -15,12 +15,10 @@ app.config['SECRET_KEY'] = 'I have a dream'
 app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd() + '/uploads/'
 app.config['RESULTS'] = dir_results
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
-app.config['MODEL'] = "model/model.model"
 
-S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME")
-S3_KEY = os.environ.get("S3_KEY")
-S3_SECRET = os.environ.get("S3_SECRET")
-S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET_NAME)
+MODEL = "model/model.model"
+OBJECT_STORE = os.environ.get("OBJECT_STORE")
+
 
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
@@ -36,40 +34,19 @@ class UploadForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+
     form = UploadForm()
     if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        result_name = NotSanta().classify(app.config['MODEL'], 'uploads/' + filename)
+        upload_filename = photos.save(form.photo.data)
+        result_filename = NotSanta().classify(MODEL, 'uploads/' + upload_filename)
     else:
-        result_name = None
-        s3_result = None
+        result_filename = None
+        result = None
 
-    if result_name:
+    if result_filename:
+        result = ObjectStore(OBJECT_STORE, result_filename).upload()
 
-        s3 = boto3.client(
-            "s3",
-            aws_access_key_id=S3_KEY,
-            aws_secret_access_key=S3_SECRET
-        )
-
-
-        print(result_name, S3_BUCKET_NAME)
-        try:
-            s3.upload_file(
-                result_name,
-                S3_BUCKET_NAME,
-                result_name,
-                ExtraArgs={
-                   "ACL": "public-read"
-                }
-            )
-            s3_result = "{}{}".format(S3_LOCATION, result_name)
-
-        except Exception as e:
-            print("S3 ERROR: ", e)
-            raise
-
-    return render_template('index.html', form=form, file=s3_result, host=curr_host, ip=curr_ip)
+    return render_template('index.html', form=form, file=result, host=curr_host, ip=curr_ip)
 
 
 if __name__ == '__main__':
