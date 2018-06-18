@@ -6,13 +6,19 @@ from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import SubmitField
 from lib import NotSanta
+from lib import ObjectStore
 
 dir_results = os.getcwd() + '/static/'
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'I have a dream'
 app.config['UPLOADED_PHOTOS_DEST'] = os.getcwd() + '/uploads/'
 app.config['RESULTS'] = dir_results
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
+
+MODEL = "model/model.model"
+OBJECT_STORE = os.environ.get("OBJECT_STORE")
+
 
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
@@ -28,16 +34,22 @@ class UploadForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+
     form = UploadForm()
     if form.validate_on_submit():
-        filename = photos.save(form.photo.data)
-        result = NotSanta().classify("model/model.model", 'uploads/' + filename)
-        result_name = os.path.basename(result)
+        upload_filename = photos.save(form.photo.data)
+        result_filename = NotSanta().classify(MODEL, 'uploads/' + upload_filename)
     else:
-        result_name = None
-    print(">>>", result_name)
+        result_filename = None
+        result = None
 
-    return render_template('index.html', form=form, file=result_name, host=curr_host, ip=curr_ip)
+    if result_filename:
+        result = ObjectStore(OBJECT_STORE, result_filename).upload()
+
+    if OBJECT_STORE != 'local':
+    	return render_template('index.html', form=form, file=result, host=curr_host, ip=curr_ip)
+    else: 
+    	return render_template('index.local.html', form=form, file=result, host=curr_host, ip=curr_ip)
 
 
 if __name__ == '__main__':

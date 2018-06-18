@@ -29,18 +29,15 @@ image = np.expand_dims(image, axis=0)
 model = load_model(args["model"])
 
 # classify the input image
-(unkown, dog, cat) = model.predict(image)[0]
+(unkown, santa) = model.predict(image)[0]
 
 # build the label
 
-if dog > unkown and dog > cat:
-    label = "Dog"
-    proba =  dog
-elif cat > unkown and cat > dog:
-    label = "Cat"
-    proba = cat
+if santa > unkown: 
+    label = "Santa"
+    proba = santa
 else: 
-    label = "Wut"
+    label = "Not Santa"
     proba = unkown
 
 label = "{}: {:.2f}%".format(label, proba * 100)
