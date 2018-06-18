@@ -1,4 +1,5 @@
-<h1> Car or Not Car ?</h1>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+<h1>Is it Cat or Car ?</h1>
 <form method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     {{ form.photo }}
@@ -11,8 +12,8 @@
 {% if file %}
 <br>
  <img src="{{ url_for( 'static', filename=file ) }}" />
- <P>
+{% endif %}
+<P><BR><P><BR>
 This page served from: <BR>
  {{host}} <BR>
  {{ip}}
-{% endif %}
