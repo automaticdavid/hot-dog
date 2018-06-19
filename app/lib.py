@@ -30,7 +30,7 @@ class NotSanta:
         (unkown, car, cat) = model.predict(image)[0]
 
         # build the label
-	if car > unkown and car > cat:
+        if car > unkown and car > cat:
             label = "CAR"
             proba =car 
         elif cat > unkown and cat > car:
@@ -46,7 +46,7 @@ class NotSanta:
         output = imutils.resize(orig, width=400)
 
         cv2.putText(output, label, (10, 25),  cv2.FONT_HERSHEY_SIMPLEX,
-	    1, (0, 255, 0), 3)
+            1, (0, 255, 0), 3)
 
         f = tempfile.NamedTemporaryFile(mode='w+b', delete=False, dir='static', suffix='.jpg')
         cv2.imwrite( f.name, output)
