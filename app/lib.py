@@ -8,6 +8,8 @@ import tempfile
 import boto3
 import os
 from azure.storage.blob import BlockBlobService, PublicAccess
+from google.cloud import storage
+
 
 class NotSanta:
 
@@ -136,4 +138,23 @@ class ObjectStore:
         
         return(blob_result)
         
+
+    def goog_upload(sefl, filepath):
+
+        bucket_name = os.environ.get("GOOG_BUCKET_NAME")
+        destination_blob_name = os.path.basename(filepath)
+        storage_client = storage.Client()
+        bucket = storage_client.get_bucket(bucket_name)
+        blob = bucket.blob(destination_blob_name)
+        blob.upload_from_filename(filepath)
+
+
+
+
+
+
+
+
+
+
 

@@ -10,3 +10,4 @@ opencv-python
 gunicorn
 boto3
 azure-storage
+google-cloud-storag
