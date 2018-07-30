@@ -134,11 +134,12 @@ class ObjectStore:
                 filepath)
 
             blob_result = "https://{}.blob.core.windows.net/results/{}".format(BLOB_ACCOUNT, filename)
+            return(blob_result)
 
         except Exception as e:
             print("BLOB ERROR: ", e)
         
-        return(blob_result)
+
         
 
     def goog_upload(sefl, filepath):
@@ -152,10 +153,11 @@ class ObjectStore:
             blob = bucket.blob(destination_blob_name)
             blob.upload_from_filename(filepath)
             blob.make_public()
+            return(blob.public_url)
         except Exception as e:
             print("Google Storage ERROR: ", e)
         
-        return(blob.public_url())
+
         
 
 
