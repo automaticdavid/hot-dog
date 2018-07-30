@@ -71,7 +71,9 @@ class ObjectStore:
         if store  == 's3':
             result = self.s3_upload(filepath)
         elif store == 'blob':
-            result = self.blob_upload(filepath)           
+            result = self.blob_upload(filepath)    
+        elif store == 'goog':
+            result = self.goog_upload(filepath)        
         elif store == 'local':
             filename = os.path.basename(filepath)
             return(filename)
@@ -143,12 +145,18 @@ class ObjectStore:
 
         bucket_name = os.environ.get("GOOG_BUCKET_NAME")
         destination_blob_name = os.path.basename(filepath)
-        storage_client = storage.Client()
-        bucket = storage_client.get_bucket(bucket_name)
-        blob = bucket.blob(destination_blob_name)
-        blob.upload_from_filename(filepath)
-
-
+        
+        try: 
+            storage_client = storage.Client()
+            bucket = storage_client.get_bucket(bucket_name)
+            blob = bucket.blob(destination_blob_name)
+            blob.upload_from_filename(filepath)
+            blob.make_public()
+        except Exception as e:
+            print("Google Storage ERROR: ", e)
+        
+        return(blob.public_url())
+        
 
 
 
