@@ -27,16 +27,18 @@ class NotSanta:
         image = np.expand_dims(image, axis=0)
 
         # classify the input image
-        (not_car, car) = model.predict(image)[0]
+        (unkown, car, cat) = model.predict(image)[0]
 
         # build the label
-
-        if car > not_car:
-            label = "It's a CAR"
-            proba = car
+        if car > unkown and car > cat:
+            label = "CAR"
+            proba =car 
+        elif cat > unkown and cat > car:
+            label = "CAT"
+            proba = cat
         else: 
-            label = "Not a car."
-            proba = not_car
+            label = "What?"
+            proba = unkown
 
         label = "{}: {:.2f}%".format(label, proba * 100)
 
