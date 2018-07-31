@@ -8,6 +8,8 @@ import tempfile
 import boto3
 import os
 from azure.storage.blob import BlockBlobService, PublicAccess
+from google.cloud import storage
+
 
 class NotSanta:
 
