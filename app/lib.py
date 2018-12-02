@@ -153,7 +153,6 @@ class ObjectStore:
             bucket = storage_client.get_bucket(bucket_name)
             blob = bucket.blob(destination_blob_name)
             blob.upload_from_filename(filepath)
-            blob.make_public()
             return(blob.public_url)
         except Exception as e:
             print("Google Storage ERROR: ", e)
