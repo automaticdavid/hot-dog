@@ -8,7 +8,3 @@ errorlog = '/tmp/gunicorn.error.log'
 reload = True
 #enable_stdio_inheritance = True
 #loglevel = 'debug'
-
-# -- {mark} ANSIBLE MANAGED BLOCK -- #
-# -- {mark} ANSIBLE MANAGED BLOCK -- #
-
